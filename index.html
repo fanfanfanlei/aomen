@@ -1,0 +1,487 @@
+<!DOCTYPE html><html class="dark" lang="zh-CN" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>彩票中心</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Hanken+Grotesk:wght@600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- React 引入 -->
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#dae2fd",
+                    "primary": "#ffecb9",
+                    "secondary-fixed": "#ffdadb",
+                    "on-tertiary-fixed-variant": "#3f465c",
+                    "background": "#051424",
+                    "secondary": "#ffb2b7",
+                    "on-tertiary-fixed": "#131b2e",
+                    "inverse-surface": "#d4e4fa",
+                    "error-container": "#93000a",
+                    "on-primary-container": "#6c5700",
+                    "on-background": "#d4e4fa",
+                    "tertiary": "#e8ecff",
+                    "error": "#ffb4ab",
+                    "surface-dim": "#051424",
+                    "inverse-on-surface": "#233143",
+                    "on-primary": "#3c2f00",
+                    "on-secondary-fixed-variant": "#92002a",
+                    "on-surface-variant": "#d1c6ab",
+                    "surface-container-low": "#0d1c2d",
+                    "tertiary-container": "#c9d0ea",
+                    "on-surface": "#d4e4fa",
+                    "primary-fixed": "#ffe083",
+                    "surface-tint": "#eec200",
+                    "surface-container-lowest": "#010f1f",
+                    "on-tertiary": "#283044",
+                    "primary-container": "#facc15",
+                    "surface-container": "#122131",
+                    "on-primary-fixed-variant": "#574500",
+                    "on-secondary-fixed": "#40000d",
+                    "surface-variant": "#273647",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-high": "#1c2b3c",
+                    "secondary-fixed-dim": "#ffb2b7",
+                    "on-secondary": "#67001b",
+                    "secondary-container": "#b50036",
+                    "outline": "#9a9078",
+                    "primary-fixed-dim": "#eec200",
+                    "on-primary-fixed": "#231b00",
+                    "on-secondary-container": "#ffc2c4",
+                    "surface-container-highest": "#273647",
+                    "surface-bright": "#2c3a4c",
+                    "on-tertiary-container": "#51596f",
+                    "on-error": "#690005",
+                    "inverse-primary": "#735c00",
+                    "tertiary-fixed-dim": "#bec6e0",
+                    "outline-variant": "#4d4632",
+                    "surface": "#051424"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "card-padding": "24px",
+                    "container-margin": "24px",
+                    "stack-lg": "32px",
+                    "stack-sm": "8px",
+                    "stack-md": "16px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Inter"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "body-lg": ["Inter"],
+                    "headline-sm": ["Hanken Grotesk"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "label-mono": ["JetBrains Mono"],
+                    "number-xl": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "label-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "number-xl": ["28px", {"lineHeight": "32px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background: radial-gradient(circle at top right, #122131 0%, #051424 100%);
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+        .number-glow-yellow {
+            box-shadow: 0 0 15px rgba(238, 194, 0, 0.4);
+        }
+        .number-glow-coral {
+            box-shadow: 0 0 15px rgba(255, 178, 183, 0.5);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .text-base { font-size: 0.75rem !important }
+        .new-gap { gap:0.54rem !important }
+        .new-padding { padding: 12px 0 0 !important; border-top: 1px dashed #666; }
+    </style>
+</head>
+<body class="text-on-surface font-body-sm overflow-x-hidden selection:bg-primary selection:text-on-primary">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter h-16 bg-surface/50 backdrop-blur-xl border-b border-white/10 shadow-md shadow-primary/10">
+        <div class="flex items-center gap-4">
+            <button class="active:scale-95 transition-transform hover:opacity-80">
+            <span class="material-symbols-outlined text-primary">menu</span>
+            </button>
+            <h1 class="font-headline-md text-headline-md font-bold tracking-tight text-primary">彩票中心</h1>
+        </div>
+        <button class="active:scale-95 transition-transform hover:opacity-80">
+            <span class="material-symbols-outlined text-primary">account_circle</span>
+        </button>
+    </header>
+<main class="pb-32 mt-16 px-gutter flex flex-col items-center justify-center min-h-screen">
+
+    <!-- React 渲染容器 -->
+    <div id="root"></div>
+
+
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-surface-container/80 backdrop-blur-2xl border-t border-white/10 shadow-[0_-4px_20px_rgba(0,0,0,0.4)] rounded-t-xl">
+    <a class="flex flex-col items-center justify-center text-primary drop-shadow-[0_0_8px_rgba(238,194,0,0.5)] active:scale-90 transition-transform duration-200" href="#">
+        <span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">casino</span>
+        <span class="font-label-mono text-label-mono mt-1">预测结果</span>
+    </a>
+    <a href="./history.html" class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary/80 transition-colors active:scale-90 transition-transform duration-200" href="#">
+        <span class="material-symbols-outlined">history</span>
+        <span class="font-label-mono text-label-mono mt-1">历史开奖</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary/80 transition-colors active:scale-90 transition-transform duration-200" href="#">
+        <span class="material-symbols-outlined">query_stats</span>
+        <span class="font-label-mono text-label-mono mt-1">数据分析</span>
+    </a>
+</nav>
+
+<!-- 预测数据内联（从 predictList.json 同步内容，避免 file:// CORS） -->
+<script>
+    window.__predictList = [
+        {
+            "expect": "2026173",
+            "predictList": "05,08,12,15,19,22,26,28,31,33,37,39,41,44,46,49"
+        },
+        {
+            "expect": "2026172",
+            "predictList": "04,26,17,29,31,25,13,24,28,32,35,37,41,43,47,49"
+        },
+        {
+            "expect": "2026168",
+            "predictList": "03,07,11,15,20,24,27,30,33,36,39,42,45,47,48,49"
+        },
+        {
+            "expect": "2026167",
+            "predictList": "04,08,13,17,21,25,29,31,35,38,40,43,44,46,48,49"
+        }
+    ];
+</script>
+
+<!-- 历史开奖数据预加载（XHR + localStorage 缓存） -->
+<script>
+    (function () {
+        var CACHE_KEY = 'aomen_history_data';
+        var CACHE_TIME_KEY = 'aomen_history_cache_time';
+        var CACHE_TTL = 10 * 60 * 1000; // 10分钟
+        var API_URL = 'https://history.macaumarksix.com/history/macaujc2/y/2026';
+
+        function notifyReact(data) {
+            window.__historyData = data;
+            window.__historyDataReady = true;
+            // 触发自定义事件，通知 React 数据就绪
+            document.dispatchEvent(new CustomEvent('historyDataReady'));
+        }
+
+        // 尝试读缓存
+        try {
+            var cached = localStorage.getItem(CACHE_KEY);
+            var cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+            if (cached && cachedTime && Date.now() - Number(cachedTime) < CACHE_TTL) {
+                notifyReact(JSON.parse(cached));
+                return;
+            }
+        } catch (e) { /* ignore */ }
+
+        // 发起 XHR 请求
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', API_URL, true);
+        xhr.timeout = 10000;
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                try {
+                    var json = JSON.parse(xhr.responseText);
+                    if (json.result && Array.isArray(json.data)) {
+                        try {
+                            localStorage.setItem(CACHE_KEY, JSON.stringify(json.data));
+                            localStorage.setItem(CACHE_TIME_KEY, String(Date.now()));
+                        } catch (e) { /* storage full, ignore */ }
+                        notifyReact(json.data);
+                        return;
+                    }
+                } catch (e) { /* parse error */ }
+            }
+            notifyReact([]);
+        };
+        xhr.onerror = xhr.ontimeout = function () { notifyReact([]); };
+        xhr.send();
+    })();
+</script>
+
+<script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // ============ 数据工具 ============
+    // 解析单条开奖记录，返回正码和特码
+    const parseOpenCode = (item) => {
+        const codes = item.openCode.split(',');
+        const zodiacs = item.zodiac.split(',');
+        const normalNums = codes.slice(0, 6).map(Number);
+        const normalZodiacs = zodiacs.slice(0, 6);
+        const specialNum = Number(codes[6]);
+        const specialZodiac = zodiacs[6] || '';
+        return { normalNums, normalZodiacs, specialNum, specialZodiac };
+    };
+
+    // ============ 组件定义 ============
+
+    // 号码球
+    const NumberBall = ({ number, type = 'gold', size = 'sm' }) => {
+        const sizeClass = size === 'md'
+            ? 'w-8 h-8 md:w-9 md:h-9'
+            : 'w-8 h-8 md:w-9 md:h-9';
+        const isCoral = type === 'coral';
+        return (
+            <div className={`rounded-full flex items-center justify-center ${sizeClass} ${
+                isCoral
+                    ? 'bg-secondary-container border-2 border-secondary number-glow-coral'
+                    : 'bg-primary-fixed-dim border border-primary/30 number-glow-yellow'
+            }`}>
+                <span className={`font-bold text-xs md:text-sm ${isCoral ? 'text-on-secondary-container' : 'text-on-primary'}`}>
+                    {String(number).padStart(2, '0')}
+                </span>
+            </div>
+        );
+    };
+
+    // 预测号码网格
+    const NumberGrid = ({ numbers, paddingBottom, specialNum }) => (
+        <div className="grid grid-cols-8 gap-2 md:gap-3" style={{ paddingBottom: paddingBottom || 0 }}>
+            {numbers.map((num, idx) => (
+                <div key={idx} className="flex items-center justify-center">
+                    <NumberBall number={num} type={specialNum !== undefined && num === specialNum ? 'coral' : 'gold'} size="sm" />
+                </div>
+            ))}
+        </div>
+    );
+
+    // 卡片头部
+    const CardHeader = ({ title, subtitle }) => (
+        <div className="flex justify-between items-center mb-6 group/header">
+            <div className="flex flex-row gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-fixed to-surface-tint flex items-center justify-center shadow-lg shadow-primary/20">
+                    <span className="font-headline-sm text-on-primary-fixed font-bold">澳</span>
+                </div>
+                <div>
+                    <h4 className="font-headline-sm text-headline-sm text-primary flex items-center gap-2">
+                        <span className="material-symbols-outlined text-primary">auto_graph</span>{title}
+                    </h4>
+                    <p className="text-on-surface-variant font-label-mono opacity-70" style={{ fontSize: '0.875rem' }}>{subtitle}</p>
+                </div>
+            </div>
+            <a href="#" className="flex items-center justify-center p-2 rounded-full hover:bg-primary/10 transition-colors duration-300">
+                <span className="material-symbols-outlined text-primary/40 group-hover/header:text-primary transition-colors">chevron_right</span>
+            </a>
+        </div>
+    );
+
+    // 开奖号码行（正码+特码）
+    const ResultRow = ({ normalNums, normalZodiacs, specialNum, specialZodiac }) => (
+        <div className="new-padding flex flex-col items-center relative overflow-hidden group/card hover:bg-white/5 transition-colors duration-300">
+            <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(238,194,0,0.05)_0%,transparent_70%)]"></div>
+            <div className="relative z-10 w-full flex items-center justify-between flex-nowrap">
+                {normalNums.map((num, idx) => (
+                    <div key={idx} className="flex flex-col items-center gap-1">
+                        <NumberBall number={num} type="gold" size="md" />
+                        <span className="text-on-surface-variant font-label-mono text-[10px] md:text-xs">{normalZodiacs[idx] || ''}</span>
+                    </div>
+                ))}
+                <div className="flex items-center opacity-40 mx-0.5">
+                    <span className="material-symbols-outlined text-on-surface text-sm">add</span>
+                </div>
+                <div className="flex flex-col items-center gap-1">
+                    <NumberBall number={specialNum} type="coral" size="md" />
+                    <span className="text-on-surface-variant font-label-mono text-[10px] md:text-xs">{specialZodiac}</span>
+                </div>
+            </div>
+        </div>
+    );
+
+    // 下期预测卡片（无历史开奖对应）
+    const NextPredictCard = ({ expect, predictNumbers }) => (
+        <div className="glass-card w-full max-w-lg mt-stack-lg rounded-3xl overflow-hidden p-card-padding transition-all duration-500">
+            <CardHeader title="下期预测" subtitle={`第 ${expect} 期`} />
+            <NumberGrid numbers={predictNumbers} />
+        </div>
+    );
+
+    // 历史预测卡片（有历史开奖对应）
+    const HistoryPredictCard = ({ expect, predictNumbers, historyItem }) => {
+        const { normalNums, normalZodiacs, specialNum, specialZodiac } = parseOpenCode(historyItem);
+        return (
+            <div className="glass-card w-full max-w-lg rounded-3xl overflow-hidden p-card-padding transition-all duration-500" style={{ marginTop: 16 }}>
+                <CardHeader title="历史预测" subtitle={`第 ${expect} 期`} />
+                <NumberGrid numbers={predictNumbers} paddingBottom={12} specialNum={specialNum} />
+                <ResultRow
+                    normalNums={normalNums}
+                    normalZodiacs={normalZodiacs}
+                    specialNum={specialNum}
+                    specialZodiac={specialZodiac}
+                />
+            </div>
+        );
+    };
+
+    // 加载占位
+    const LoadingSkeleton = () => (
+        <div className="glass-card w-full max-w-lg mt-stack-lg rounded-3xl p-card-padding animate-pulse">
+            <div className="flex gap-4 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-white/10"></div>
+                <div className="flex-1 space-y-2 pt-1">
+                    <div className="h-4 bg-white/10 rounded w-24"></div>
+                    <div className="h-3 bg-white/10 rounded w-16"></div>
+                </div>
+            </div>
+            <div className="grid grid-cols-8 gap-2">
+                {Array.from({ length: 16 }).map((_, i) => (
+                    <div key={i} className="w-8 h-8 rounded-full bg-white/10 mx-auto"></div>
+                ))}
+            </div>
+        </div>
+    );
+
+    // ============ 主应用 ============
+    const App = () => {
+        const [loading, setLoading] = useState(true);
+        const [error, setError] = useState(null);
+        const [cards, setCards] = useState([]); // { type: 'next'|'history', expect, predictNumbers, historyItem? }
+
+        useEffect(() => {
+            const init = () => {
+                try {
+                    // 历史数据由页面初始化脚本预加载，挂在 window.__historyData
+                    // 预测数据直接内联在 window.__predictList
+                    const historyData = window.__historyData || [];
+                    const predictList = window.__predictList || [];
+
+                    // 以期号为 key 建立历史开奖 map
+                    const historyMap = {};
+                    historyData.forEach(item => { historyMap[item.expect] = item; });
+
+                    // 找到下期预测（expect 对应下一期，即不在历史开奖中的最新预测）
+                    const result = [];
+
+                    // 按 expect 降序排列预测列表
+                    const sortedPredicts = [...predictList].sort((a, b) => Number(b.expect) - Number(a.expect));
+
+                    sortedPredicts.forEach(pred => {
+                        const nums = pred.predictList.split(',').map(s => Number(s.trim()));
+                        const historyItem = historyMap[pred.expect];
+                        if (!historyItem) {
+                            // 没有对应历史开奖 → 下期预测
+                            result.push({ type: 'next', expect: pred.expect, predictNumbers: nums });
+                        } else {
+                            // 有对应历史开奖 → 历史预测+开奖结果
+                            result.push({ type: 'history', expect: pred.expect, predictNumbers: nums, historyItem });
+                        }
+                    });
+
+                    setCards(result);
+                } catch (e) {
+                    console.error(e);
+                    setError('数据处理失败，请稍后重试');
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            if (window.__historyDataReady) {
+                // 数据已就绪（缓存命中场景）
+                init();
+            } else {
+                // 等待 XHR 完成
+                document.addEventListener('historyDataReady', init, { once: true });
+            }
+
+            return () => {
+                document.removeEventListener('historyDataReady', init);
+            };
+        }, []);
+
+        if (loading) {
+            return (
+                <div>
+                    <LoadingSkeleton />
+                    <LoadingSkeleton />
+                </div>
+            );
+        }
+
+        if (error) {
+            return (
+                <div className="glass-card w-full max-w-lg mt-stack-lg rounded-3xl p-card-padding text-center">
+                    <span className="material-symbols-outlined text-error text-4xl mb-2 block">error_outline</span>
+                    <p className="text-error">{error}</p>
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="mt-4 px-6 py-2 rounded-full border border-primary/40 text-primary text-sm hover:bg-primary/10 transition-colors"
+                    >重新加载</button>
+                </div>
+            );
+        }
+
+        return (
+            <div className="w-full flex flex-col items-center">
+                {cards.map((card, idx) =>
+                    card.type === 'next'
+                        ? <NextPredictCard key={idx} expect={card.expect} predictNumbers={card.predictNumbers} />
+                        : <HistoryPredictCard key={idx} expect={card.expect} predictNumbers={card.predictNumbers} historyItem={card.historyItem} />
+                )}
+                {cards.length === 0 && (
+                    <div className="glass-card w-full max-w-lg mt-stack-lg rounded-3xl p-card-padding text-center text-on-surface-variant">
+                        暂无预测数据
+                    </div>
+                )}
+            </div>
+        );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const body = document.body;
+        
+        // Add a subtle mouse follow effect for desktop
+        if (window.matchMedia('(min-width: 1024px)').matches) {
+            const spotlight = document.createElement('div');
+            spotlight.className = 'fixed pointer-events-none w-[600px] h-[600px] rounded-full opacity-10 blur-[120px] bg-primary z-0';
+            body.appendChild(spotlight);
+            
+            document.addEventListener('mousemove', (e) => {
+                spotlight.style.left = `${e.clientX - 300}px`;
+                spotlight.style.top = `${e.clientY - 300}px`;
+            });
+        }
+    });
+</script>
+</body>
+</html>
